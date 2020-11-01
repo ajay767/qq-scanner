@@ -54767,11 +54767,11 @@ var ScannedBuffer;
   var photo = _qrGenerator.DOMElement.qrScannerPhoto;
   var startbutton = _qrGenerator.DOMElement.qrScannerStartBtn;
   console.log(canvas);
+  var videoConstrants = {
+    facingMode: "enviroment"
+  };
   navigator.mediaDevices.getUserMedia({
-    video: true,
-    facingMode: {
-      exact: "enviroment"
-    }
+    video: videoConstrants
   }).then(function (stream) {
     video.srcObject = stream;
     video.play();
