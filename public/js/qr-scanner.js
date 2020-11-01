@@ -16,7 +16,7 @@ let ScannedBuffer;
 
   console.log(canvas);
   navigator.mediaDevices
-    .getUserMedia({ video: true, facingMode: "environment" })
+    .getUserMedia({ video: true, facingMode: { exact: "enviroment" } })
     .then((stream) => {
       video.srcObject = stream;
       video.play();
