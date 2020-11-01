@@ -9,6 +9,7 @@ export const DOMElement = {
   qrCodeOutputCanvas: document.querySelector("#qr-canvas"),
   qrScannerVideo: document.querySelector("#video"),
   qrScannerStartBtn: document.querySelector("#startbutton"),
+  flipBtn: document.querySelector("#flip-btn"),
   qrScannerCanvas: document.querySelector("#canvas-capture"),
   qrScannerPhoto: document.querySelector("#photo"),
   qrScannedInformation: document.querySelector(".output-information"),

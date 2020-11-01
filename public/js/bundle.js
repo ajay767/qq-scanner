@@ -5436,6 +5436,7 @@ var DOMElement = {
   qrCodeOutputCanvas: document.querySelector("#qr-canvas"),
   qrScannerVideo: document.querySelector("#video"),
   qrScannerStartBtn: document.querySelector("#startbutton"),
+  flipBtn: document.querySelector("#flip-btn"),
   qrScannerCanvas: document.querySelector("#canvas-capture"),
   qrScannerPhoto: document.querySelector("#photo"),
   qrScannedInformation: document.querySelector(".output-information")
@@ -54767,7 +54768,8 @@ var ScannedBuffer;
   var startbutton = _qrGenerator.DOMElement.qrScannerStartBtn;
   console.log(canvas);
   navigator.mediaDevices.getUserMedia({
-    video: true
+    video: true,
+    facingMode: "environment"
   }).then(function (stream) {
     video.srcObject = stream;
     video.play();
