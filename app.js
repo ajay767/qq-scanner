@@ -1,5 +1,4 @@
 const express = require("express");
-const fs = require("fs");
 const path = require("path");
 
 const app = express();
@@ -9,6 +8,6 @@ app.get("/", (req, res) => {
   res.sendFile("index.html");
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log("connected to server at port 3000 :)!");
 });
