@@ -14,12 +14,19 @@ let ScannedBuffer;
   let photo = DOMElement.qrScannerPhoto;
   let startbutton = DOMElement.qrScannerStartBtn;
 
-  console.log(canvas);
-  const videoConstrants = {
-    facingMode: "enviroment",
-  };
+  //   const videoConstrants = {
+  //     facingMode: {
+  //       exact: "enviroment",
+  //     },
+  //   };
   navigator.mediaDevices
-    .getUserMedia({ video: videoConstrants })
+    .getUserMedia({
+      video: {
+        facingMode: {
+          exact: "enviroment",
+        },
+      },
+    })
     .then((stream) => {
       video.srcObject = stream;
       video.play();

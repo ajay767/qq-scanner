@@ -54765,13 +54765,18 @@ var ScannedBuffer;
   var video = _qrGenerator.DOMElement.qrScannerVideo;
   var canvas = _qrGenerator.DOMElement.qrScannerCanvas;
   var photo = _qrGenerator.DOMElement.qrScannerPhoto;
-  var startbutton = _qrGenerator.DOMElement.qrScannerStartBtn;
-  console.log(canvas);
-  var videoConstrants = {
-    facingMode: "enviroment"
-  };
+  var startbutton = _qrGenerator.DOMElement.qrScannerStartBtn; //   const videoConstrants = {
+  //     facingMode: {
+  //       exact: "enviroment",
+  //     },
+  //   };
+
   navigator.mediaDevices.getUserMedia({
-    video: videoConstrants
+    video: {
+      facingMode: {
+        exact: "enviroment"
+      }
+    }
   }).then(function (stream) {
     video.srcObject = stream;
     video.play();
