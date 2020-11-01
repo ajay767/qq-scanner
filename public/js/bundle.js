@@ -54756,6 +54756,12 @@ var _qrGenerator = require("./qr-generator");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 var ScannedBuffer;
 
 (function () {
@@ -54765,23 +54771,60 @@ var ScannedBuffer;
   var video = _qrGenerator.DOMElement.qrScannerVideo;
   var canvas = _qrGenerator.DOMElement.qrScannerCanvas;
   var photo = _qrGenerator.DOMElement.qrScannerPhoto;
-  var startbutton = _qrGenerator.DOMElement.qrScannerStartBtn; //   const videoConstrants = {
-  //     facingMode: {
-  //       exact: "enviroment",
-  //     },
-  //   };
+  var startbutton = _qrGenerator.DOMElement.qrScannerStartBtn;
+  navigator.mediaDevices.enumerateDevices().then(function (devices) {
+    var sourceId = null; // enumerate all devices
 
-  navigator.mediaDevices.getUserMedia({
-    video: {
-      facingMode: "enviroment"
+    var _iterator = _createForOfIteratorHelper(devices),
+        _step;
+
+    try {
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var device = _step.value;
+
+        // if there is still no video input, or if this is the rear camera
+        if (device.kind == "videoinput" && (!sourceId || device.label.indexOf("back") !== -1)) {
+          sourceId = device.deviceId;
+        }
+      } // we didn't find any video input
+
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
     }
-  }).then(function (stream) {
-    video.srcObject = stream;
-    video.play();
-  }).catch(function (err) {
-    console.log(err);
-    alert("Permission denied!!");
-  });
+
+    if (!sourceId) {
+      throw "no video input";
+    }
+
+    var constraints = {
+      video: {
+        sourceId: sourceId
+      }
+    };
+    navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+      video.srcObject = stream;
+      video.play();
+    }).catch(function (err) {
+      console.log(err);
+      alert("Permission denied!!");
+    });
+  }); //   navigator.mediaDevices
+  //     .getUserMedia({
+  //       video: {
+  //         facingMode: "enviroment",
+  //       },
+  //     })
+  //     .then((stream) => {
+  //       video.srcObject = stream;
+  //       video.play();
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       alert("Permission denied!!");
+  //     });
+
   video.addEventListener("canplay", function (e) {
     if (!streaming) {
       height = video.videoHeight / (video.videoWidth / width);

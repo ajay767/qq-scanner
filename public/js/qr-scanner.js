@@ -14,25 +14,54 @@ let ScannedBuffer;
   let photo = DOMElement.qrScannerPhoto;
   let startbutton = DOMElement.qrScannerStartBtn;
 
-  //   const videoConstrants = {
-  //     facingMode: {
-  //       exact: "enviroment",
-  //     },
-  //   };
-  navigator.mediaDevices
-    .getUserMedia({
+  navigator.mediaDevices.enumerateDevices().then((devices) => {
+    let sourceId = null;
+    // enumerate all devices
+    for (var device of devices) {
+      // if there is still no video input, or if this is the rear camera
+      if (
+        device.kind == "videoinput" &&
+        (!sourceId || device.label.indexOf("back") !== -1)
+      ) {
+        sourceId = device.deviceId;
+      }
+    }
+    // we didn't find any video input
+    if (!sourceId) {
+      throw "no video input";
+    }
+    let constraints = {
       video: {
-        facingMode: "enviroment",
+        sourceId: sourceId,
       },
-    })
-    .then((stream) => {
-      video.srcObject = stream;
-      video.play();
-    })
-    .catch((err) => {
-      console.log(err);
-      alert("Permission denied!!");
-    });
+    };
+
+    navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then((stream) => {
+        video.srcObject = stream;
+        video.play();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Permission denied!!");
+      });
+  });
+
+  //   navigator.mediaDevices
+  //     .getUserMedia({
+  //       video: {
+  //         facingMode: "enviroment",
+  //       },
+  //     })
+  //     .then((stream) => {
+  //       video.srcObject = stream;
+  //       video.play();
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       alert("Permission denied!!");
+  //     });
 
   video.addEventListener(
     "canplay",
