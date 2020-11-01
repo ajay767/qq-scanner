@@ -22,9 +22,7 @@ let ScannedBuffer;
   navigator.mediaDevices
     .getUserMedia({
       video: {
-        facingMode: {
-          exact: "enviroment",
-        },
+        facingMode: "enviroment",
       },
     })
     .then((stream) => {

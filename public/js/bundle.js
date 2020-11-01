@@ -54773,9 +54773,7 @@ var ScannedBuffer;
 
   navigator.mediaDevices.getUserMedia({
     video: {
-      facingMode: {
-        exact: "enviroment"
-      }
+      facingMode: "enviroment"
     }
   }).then(function (stream) {
     video.srcObject = stream;
